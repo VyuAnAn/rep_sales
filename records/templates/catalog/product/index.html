@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+    Товарики
+{% endblock %}
+
+{% block content %}
+
+    <div id="sidebar">
+        <h3>Категории</h3>
+        <ul>
+            {% for cat in categories %}
+                <li>
+                    <a href="#">{{ cat.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div id="main" class="product-list">
+        <h1>Товарики</h1>
+
+    </div>
+
+{% endblock %}
