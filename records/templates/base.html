@@ -11,7 +11,7 @@
     <body>
 
         <div id="header">
-            <span class="logo">Магазик</span>
+            <span class="logo">Магазин</span>
             {% if request.user.is_authenticated %}
                 <ul class="menu">
                     <li {% if section == "sales_log" %} class="selected" {% endif %} >
@@ -29,9 +29,9 @@
             <span class="user">
                 {% if request.user.is_authenticated %}
                     Hello, {{ request.user.first_name }}.
-                    <a href="{% url 'logout' %}">Выйти? :(</a>
+                    <a href="{% url 'logout' %}">Выйти?</a>
                 {% else %}
-                    <a href="{% url 'login' %}">Зайти в гости :)</a>
+                    <a href="{% url 'login' %}">Зайти в гости</a>
                 {% endif %}
             </span>
         </div>

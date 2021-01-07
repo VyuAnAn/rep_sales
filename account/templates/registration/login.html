@@ -6,15 +6,17 @@
 
     <h1>Войти</h1>
 
-    <p>Ещё нет аккаунта? <a href="{% url 'register' %}">Зарегистрируйся</a></p>
+    <p>Ещё нет аккаунта? <a href="{% url 'register' %}">Зарегистрируйтесь</a>
 
     <div class="login-form">
-        <form action="{% url 'login' %}" method="post">
+        <form action="{% url 'login' %}" method="POST">
             {{ form.as_p }}
             {% csrf_token %}
-            <input type="hidden" name="next" value="{{ next }}" />
-            <p><input type="submit" value="В гости :)"></p>
+            <input type="hidden" name="text" value="{{ next }}">
+            <p><input type="submit" value="В гости"></p>
         </form>
     </div>
+
+    <p> <a href="{% url 'password_reset' %}">Забыли пароль?</a></p>
 
 {% endblock %}

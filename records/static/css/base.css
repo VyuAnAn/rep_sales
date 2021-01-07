@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Ubuntu);
+/*@import url(http://fonts.googleapis.com/css?family=Ubuntu);*/
 
 body {
     margin:0;
@@ -17,15 +17,6 @@ a {
 
 a:hover {
     color:#77b6e2;
-}
-
-a.button, input[type="submit"] {
-    color:#fff;
-    background:#cba1d6;
-    border-radius:4px;
-    padding:10px 20px;
-    font-size:14px;
-    border:0;
 }
 
 a.button.light {
@@ -80,14 +71,63 @@ tbody td.num {
     text-align:right;
 }
 
-td input[type="submit"] {
+/*td input[type="submit"] {
     font-size:12px;
     padding:4px 10px;
+}*/
+
+
+/* forms */
+form {
+    overflow:auto;
 }
 
-form p label, form p input {
+form p {
+    width:100%;
+    overflow:auto;
+}
+
+label {
     float:left;
     clear:both;
+    color:#333;
+    margin-bottom:4px;
+}
+
+input, textarea {
+
+    clear:both;
+    float:left;
+    /*margin:0 0 10px;*/
+    background:#efefef;
+    border:0;
+    padding:10px 20px;
+    font-size:14px;
+}
+
+input[type=submit], a.button {
+    font-weight:bold;
+    background:#cba1d6;
+    color:#fff;
+    border-radius:4px;
+    padding:10px 20px;
+    font-size:14px;
+    border:0;
+    text-transform:uppercase;
+}
+
+.errorlist {
+    color:#cc0033;
+    float:left;
+    clear:both;
+    padding-left:10px;
+}
+.helptext {
+    margin:0 0 20px 0;
+    color:#aaa;
+    clear:both;
+    float:left;
+    font-size:13px;
 }
 
 form p label {
@@ -98,13 +138,21 @@ form p label {
 form p input {
     /*width:300px;*/
     font-size:13px;
-    margin-bottom:10px;
-    padding:10px 12px;
+    /*margin-bottom:10px;*/
+    padding:10px 20px;
     border:0;
     background:#f3edf5;
     color:#666;
     border-radius:4px;
 }
+
+/*
+form p label, form p input {
+    float:left;
+    clear:both;
+}
+
+
 
 ul.errorlist {
    float:left;
@@ -114,7 +162,11 @@ ul.errorlist {
    margin:0;
    padding:0;
 }
+*/
 
+#content {
+    padding:30px 100px;
+}
 
 /*#header {
     padding:10px 100px;
@@ -276,7 +328,7 @@ ul.errorlist {
 .order-info span {
     float:right;
 }
-
+/*
 .neg {
     color:#dc1616;
 }
@@ -338,8 +390,8 @@ ul.errorlist {
 .recommendations.cart img {
     width:120px;
 }
-
-/* braintree hosted fields */
+*/
+/* braintree hosted fields
 form div.field {
     font-size:13px;
     color:#666;
@@ -351,4 +403,4 @@ form div.field {
     background:#f3edf5;
     color:#666;
     border-radius:4px;
-}
+}*/
