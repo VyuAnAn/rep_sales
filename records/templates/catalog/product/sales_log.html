@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Журнал продаж{% endblock %}
+
+{% block content %}
+
+    <div id="sidebar">
+        <h3>Категории</h3>
+        <ul>
+
+        </ul>
+    </div>
+
+    <div id="main" class="product-list">
+        <h1>Журнал</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Наименование</th>
+                    <th>Количество</th>
+                    <th>Цена</th>
+                    <th>Продавец</th>
+                    <th>Комментарий</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                    <tr>
+                        <td>{{ log.product }}</td>
+                        <td>{{ log.quantity }}</td>
+                        <td>{{ log.price }}</td>
+                        <td>{{ log.sales_log.seller }}</td>
+                        <td>{{ log.comment }}</td>
+
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock %}

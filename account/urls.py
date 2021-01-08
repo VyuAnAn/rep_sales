@@ -8,7 +8,7 @@ from records import views as rec_views
 
 urlpatterns = [
     # Главная интернет-магазина
-    path('', rec_views.index, name='index'),
+    path('shop/', rec_views.shop, name='shop'),
     # Обработчик
     path('', include('django.contrib.auth.urls')),
     # Регистрация

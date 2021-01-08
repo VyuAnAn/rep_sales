@@ -1,5 +1,7 @@
 from django.db import models
 
+from account.models import Profile
+
 
 class Category(models.Model):
     """ Категория товара """
@@ -85,6 +87,10 @@ class Product(models.Model):
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
 
+    def __str__(self):
+        return '{} по {}р. (всего на складе {})'\
+            .format(self.group_product.name, self.price, self.quantity)
+
 
 class Parameter(models.Model):
     """ Набор характеристик """
@@ -157,32 +163,46 @@ class ProductParameter(models.Model):
 #                               on_delete=models.CASCADE,
 #                               verbose_name='Изображения')
 
-
-class Seller(models.Model):
-    """ Продавец """
-    personnel_number = models.CharField(max_length=8)
-    first_name = models.CharField(max_length=250)
-    last_name = models.CharField(max_length=250)
-
-    class Meta:
-        verbose_name = 'Продавец'
-        verbose_name_plural = 'Продавцы'
-
-    def __str__(self):
-        return "{} {}".format(self.first_name, self.last_name)
-
-
 class SalesLog(models.Model):
     """ Журнал продаж """
     created = models.DateTimeField(auto_now_add=True,
                                    verbose_name='Дата создания записи')
-    comment = models.CharField(max_length=1500)
+    comment = models.CharField(max_length=1500,
+                               blank=True,
+                               null=True,
+                               verbose_name="Комментарий")
 
-    seller = models.ForeignKey(Seller,
+    seller = models.ForeignKey(Profile,
+                               blank=True,
+                               null=True,
                                on_delete=models.CASCADE,
-                               related_name='sellers',
-                               related_query_name='seller',
+                               related_name='seller_profiles',
+                               related_query_name='seller_profile',
                                verbose_name='Продавец')
+
+    customer = models.ForeignKey(Profile,
+                                 blank=True,
+                                 null=True,
+                                 on_delete=models.CASCADE,
+                                 related_name='customer_profiles',
+                                 related_query_name='customer_profile',
+                                 verbose_name='Покупатель')
+
+    SHOP_CHOICES = [
+        ('B', 'BlossomShop'),
+        ('K', 'Kokos'),
+        ('OS', 'Online store'),
+    ]
+
+    shop = models.CharField(
+        max_length=2,
+        choices=SHOP_CHOICES,
+        default='OS'
+    )
+
+    class Meta:
+        verbose_name = 'Продажи'
+        verbose_name_plural = 'Продажи'
 
 
 class SalesLogDetail(models.Model):
@@ -190,16 +210,26 @@ class SalesLogDetail(models.Model):
     price = models.DecimalField(max_digits=10,
                                 decimal_places=2,
                                 verbose_name='Цена товара')
-    quantity = models.IntegerField()
-    comment = models.CharField(max_length=1500)
+
+    quantity = models.IntegerField(default=1)
+
+    comment = models.CharField(max_length=1500,
+                               blank=True,
+                               null=True,
+                               verbose_name="Комментарий")
 
     product = models.ForeignKey(Product,
                                 on_delete=models.CASCADE,
                                 related_name='detail_products',
                                 related_query_name='detail_product',
                                 verbose_name='Товары')
+
     sales_log = models.ForeignKey(SalesLog,
                                   on_delete=models.CASCADE,
                                   related_name='sales_logs',
                                   related_query_name='sales_log',
                                   verbose_name='Журнал')
+
+    class Meta:
+        verbose_name = 'Детали по журналу продаж'
+        verbose_name_plural = 'Детали по журналу продаж'

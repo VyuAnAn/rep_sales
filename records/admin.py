@@ -1,6 +1,19 @@
 from django.contrib import admin
 
-from records.models import Category, GroupProduct, Product, Parameter, ProductParameter
+from records.models import Category, GroupProduct, Product, Parameter, ProductParameter, SalesLog, SalesLogDetail
+
+
+class SalesLogDetailInline(admin.TabularInline):
+    model = SalesLogDetail
+    raw_id_fields = ['sales_log']
+
+
+@admin.register(SalesLog)
+class SalesLogAdmin(admin.ModelAdmin):
+    list_display = ['created', 'shop', 'seller', 'customer', 'comment']
+    list_filter = ['created', 'shop', 'seller']
+    inlines = [SalesLogDetailInline]
+    date_hierarchy = 'created'
 
 
 @admin.register(Category)

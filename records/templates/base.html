@@ -15,10 +15,10 @@
             {% if request.user.is_authenticated %}
                 <ul class="menu">
                     <li {% if section == "sales_log" %} class="selected" {% endif %} >
-                        <a href="#">Журнал продаж</a>
+                        <a href="{% url 'records:sales_log' %}">Журнал продаж</a>
                     </li>
                     <li {% if section == "shop" %} class="selected" {% endif %} >
-                        <a href="{% url 'records:index' %}">Интернет-магазин</a>
+                        <a href="{% url 'records:shop' %}">Интернет-магазин</a>
                     </li>
                     <li {% if section == "people" %} class="selected"{% endif %}>
                         <a href="#">Человечки</a>
