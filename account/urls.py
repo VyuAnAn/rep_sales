@@ -7,15 +7,20 @@ from account import views
 from records import views as rec_views
 
 urlpatterns = [
-    # Обработчик
-    path('', include('django.contrib.auth.urls')),
-    path('register/', views.register, name='register'),
     # Главная интернет-магазина
     path('', rec_views.index, name='index'),
+    # Обработчик
+    path('', include('django.contrib.auth.urls')),
+    # Регистрация
+    path('register/', views.register, name='register'),
+    # path('profile/', views.profile, name="profile"),
+    # Изменить данные профиля
+    path('profile/change/', views.change_profile, name='change_profile'),
 
-    # Страница входа
+
+    # ВСЁ ПОНЯТНО С django.contrib.auth.urls
+    # Страницы входа/выхода
     # path('login/', auth_views.LoginView.as_view(), name='login'),
-    # Страница выхода
     # path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 
     # Шаблоны для доступа к обработчикам смены пароля.

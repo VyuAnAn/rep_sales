@@ -16,7 +16,7 @@ a {
 }
 
 a:hover {
-    color:#77b6e2;
+    color:#892ca0;
 }
 
 a.button.light {
@@ -404,3 +404,34 @@ form div.field {
     color:#666;
     border-radius:4px;
 }*/
+
+/* dropdown menu */
+.dropdown {
+  /*position: relative;*/
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f3edf5;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  right: 100px;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  padding: 12px 16px;
+  display: block;
+}
+
+/* Change color of dropdown links on hover
+.dropdown-content a:hover {background-color: #f1f1f1}*/
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}

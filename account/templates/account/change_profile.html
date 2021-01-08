@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Личная информация{% endblock %}
+
+{% block content %}
+
+    <h1>Личная информация</h1>
+
+    <form action="." method="post">
+        {{ user_form.as_p }}
+        {% csrf_token %}
+        <p><input type="submit" value="Сохранить"></p>
+    </form>
+
+{% endblock %}
