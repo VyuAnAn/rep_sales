@@ -260,7 +260,7 @@ ul.errorlist {
     overflow:hidden;
 }
 
-/*.product-list .item {
+.product-list .item {
     width:25%;
     padding:10px 20px 10px 0;
     float:left;
@@ -268,10 +268,15 @@ ul.errorlist {
     line-height:1.2;
 }
 
+.product-list .item img {
+    width:100%;
+    margin-bottom:8px;
+}
+
 .product-list  {
     width:100%;
     margin-bottom:8px;
-}*/
+}
 
 .product-detail {
     text-align:justify;

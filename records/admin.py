@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from records.models import Category, GroupProduct, Product, Parameter, ProductParameter, SalesLog, SalesLogDetail
+from records.models import Category, GroupProduct, ProductInfo, Product, Parameter, ProductParameter, SalesLog, SalesLogDetail
 
 
 class SalesLogDetailInline(admin.TabularInline):
@@ -27,22 +27,22 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Parameter)
 class ParameterAdmin(admin.ModelAdmin):
-    list_display = ['value', 'parameter', 'category']
+    list_display = ['value', 'parameter']
     list_filter = ['value']
     search_fields = ('value',)
 
 
-class ProductInline(admin.TabularInline):
-    model = Product
+class ProductInfoInline(admin.TabularInline):
+    model = ProductInfo
     raw_id_fields = ['group_product']
 
 
 @admin.register(GroupProduct)
 class GroupProductAdmin(admin.ModelAdmin):
-    list_display = ['vendor_code', 'name', 'category', 'description', 'created', 'updated', 'active']
+    list_display = ['name', 'category', 'description', 'created', 'updated', 'active']
     list_filter = ['name', 'category', 'created', 'updated', 'active']
-    search_fields = ('vendor_code', 'name')
-    inlines = [ProductInline]
+    search_fields = ('name',)
+    inlines = [ProductInfoInline]
     date_hierarchy = 'created'
     # ordering = ('status', 'publish')
 
@@ -54,8 +54,7 @@ class ProductParameterInline(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['group_product', 'purchase_price', 'price', 'created',
-                    'updated', 'active', 'available', 'quantity']
+    list_display = ['quantity']
     inlines = [ProductParameterInline]
     date_hierarchy = 'created'
     # ordering = ('status', 'publish')

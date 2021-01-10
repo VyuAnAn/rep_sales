@@ -20,7 +20,23 @@
     </div>
 
     <div id="main" class="product-list">
-        <h1>Товарики</h1>
+        <h1>{% if category %}{{ category.name }}{% else %}Товарики{% endif %}</h1>
+
+        {% for product in info_products %}
+            <ul>
+                <div class="item">
+
+                    <a href="{{ product.get_absolute_url }}">
+                        <img src="{% static 'img/no_image.png' %}">
+                    </a>
+
+                    <a href="{{ product.get_absolute_url }}">{{ product.group_product.name }}</a>
+
+                    <br>
+                    {{ product.price }} руб.
+                </div>
+            </ul>
+        {% endfor %}
 
     </div>
 

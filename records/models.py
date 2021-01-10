@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from account.models import Profile
 
@@ -7,10 +8,11 @@ class Category(models.Model):
     """ Категория товара """
     name = models.CharField(max_length=250,
                             verbose_name='Наименование категории')
-    # slag
+    # slag - потом
     active = models.BooleanField(default=True,
                                  verbose_name='Активность категории')
 
+    # внешние ключики
     category = models.ForeignKey('self',
                                  on_delete=models.CASCADE,
                                  blank=True,
@@ -27,23 +29,28 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('records:shop', args=[self.id])
+
 
 class GroupProduct(models.Model):
-    """ Группа товаров """
+    """ Группировка товаров """
     name = models.CharField(max_length=250,
-                            verbose_name='Наименование группы товаров')
+                            verbose_name='Наименование товара')
     # slag = models.SlagField()
     description = models.CharField(max_length=1000,
-                                   verbose_name='Описание группы товаров')
-    vendor_code = models.CharField(max_length=15,
-                                   verbose_name='Артикул')
+                                   verbose_name='Описание товара')
+
     created = models.DateTimeField(auto_now_add=True,
                                    verbose_name='Дата добавления')
+
     updated = models.DateTimeField(auto_now=True,
                                    verbose_name='Дата обновления')
-    active = models.BooleanField(verbose_name='Группа активна',
+
+    active = models.BooleanField(verbose_name='Активность товара',
                                  default=True)
 
+    # внешние ключики
     category = models.ForeignKey(Category,
                                  on_delete=models.CASCADE,
                                  related_name='product_categories',
@@ -58,42 +65,80 @@ class GroupProduct(models.Model):
         return self.name
 
 
-class Product(models.Model):
-    """ Товар """
-    purchase_price = models.DecimalField(max_digits=10,
-                                         decimal_places=2,
-                                         verbose_name='Закупочная стоимость товара')
-    price = models.DecimalField(max_digits=10,
-                                decimal_places=2,
-                                verbose_name='Цена')
+class ProductInfo(models.Model):
+    """ Информаия по товару """
+    vendor_code = models.CharField(max_length=15,
+                                   verbose_name='Артикул')
     created = models.DateTimeField(auto_now_add=True,
                                    verbose_name='Дата добавления')
     updated = models.DateTimeField(auto_now=True,
                                    verbose_name='Дата обновления')
     active = models.BooleanField(verbose_name='Товар активен',
                                  default=True)
-    available = models.BooleanField(verbose_name='Товар в наличии',
-                                    default=True)
-    quantity = models.IntegerField(verbose_name='Количество',
-                                   default=1)
+    # available = models.BooleanField(verbose_name='Товар в наличии',
+    #                                 default=True)
 
+    purchase_price = models.DecimalField(max_digits=10,
+                                         decimal_places=0,
+                                         verbose_name='Закупочная стоимость товара')
+
+    price = models.DecimalField(max_digits=10,
+                                decimal_places=0,
+                                verbose_name='Цена')
+
+    # внешние ключики
     group_product = models.ForeignKey(GroupProduct,
+                                      blank=True,
+                                      null=True,
                                       on_delete=models.CASCADE,
                                       related_name='group_products',
                                       related_query_name='group_product',
                                       verbose_name='Группы товаров')
 
     class Meta:
+        verbose_name = 'Информация по товару'
+        verbose_name_plural = 'Информация по товарам'
+
+    def __str__(self):
+        return '{} по {}р.'\
+            .format(self.group_product.name, self.price)
+
+    def get_absolute_url(self):
+        """ Абсолютный путь """
+        return reverse('records:product_info', args=[self.group_product.id, self.vendor_code])
+
+
+class Product(models.Model):
+    """ Товар """
+    quantity = models.IntegerField(verbose_name='Количество',
+                                   default=1)
+
+    created = models.DateTimeField(auto_now_add=True,
+                                   verbose_name='Дата добавления')
+    updated = models.DateTimeField(auto_now=True,
+                                   verbose_name='Дата обновления')
+    active = models.BooleanField(verbose_name='Товар активен',
+                                 default=True)
+
+    # внешние ключики
+    product_info = models.ForeignKey(ProductInfo,
+                                     blank=True,
+                                     null=True,
+                                     on_delete=models.CASCADE,
+                                     related_name='product_info',
+                                     related_query_name='products_info',
+                                     verbose_name='Информация по товару')
+
+    class Meta:
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
 
     def __str__(self):
-        return '{} по {}р. (всего на складе {})'\
-            .format(self.group_product.name, self.price, self.quantity)
+        return self.product_info.__str__()
 
 
 class Parameter(models.Model):
-    """ Набор характеристик """
+    """ Параметры """
     value = models.CharField(max_length=100,
                              verbose_name='Значение параметра')
 
@@ -105,25 +150,16 @@ class Parameter(models.Model):
                                   related_query_name='parameter_parameter',
                                   verbose_name='Набор')
 
-    category = models.ForeignKey(Category,
-                                 on_delete=models.CASCADE,
-                                 blank=True,
-                                 null=True,
-                                 related_name='parameter_categories',
-                                 related_query_name='parameter_category',
-                                 verbose_name='Категория'
-                                 )
-
     class Meta:
-        verbose_name = 'Набор характеристик'
-        verbose_name_plural = 'Наборы характеристик'
+        verbose_name = 'Параметр'
+        verbose_name_plural = 'Параметры'
 
     def __str__(self):
         return self.value
 
 
 class ProductParameter(models.Model):
-    """ Характеристики товара """
+    """ Комбинации параметров товара """
     product = models.ForeignKey(Product,
                                 on_delete=models.CASCADE,
                                 related_name='product_parameter_products',
@@ -137,31 +173,33 @@ class ProductParameter(models.Model):
                                   verbose_name='Характеристики')
 
     class Meta:
-        verbose_name = 'Характеристики товара'
-        verbose_name_plural = 'Характеристики товаров'
+        verbose_name = 'Комбинация параметров товара'
+        verbose_name_plural = 'Комбинации параметров  товаров'
         index_together = (('product', 'parameter'),)
 
 
-# class Image(models.Model):
-#     """ Изображения """
-#     path = models.CharField(max_length=350)
-#
-#     class Meta:
-#         verbose_name = 'Изображение'
-#         verbose_name_plural = 'Изображения'
-#
-#
-# class ProductImage(models.Model):
-#     """ Изображения товара """
-#     product = models.ForeignKey(Product,
-#                                 related_name='products',
-#                                 on_delete=models.CASCADE,
-#                                 verbose_name='Товары')
-#
-#     image = models.ForeignKey(Product,
-#                               related_name='images',
-#                               on_delete=models.CASCADE,
-#                               verbose_name='Изображения')
+class Image(models.Model):
+    """ Изображения """
+    image = models.ImageField(upload_to='products/%Y/%m/%d',
+                              verbose_name="Изображение")
+
+    class Meta:
+        verbose_name = 'Изображение'
+        verbose_name_plural = 'Изображения'
+
+
+class ProductImage(models.Model):
+    """ Изображения товара """
+    product_info = models.ForeignKey(ProductInfo,
+                                     related_name='product_info_image',
+                                     on_delete=models.CASCADE,
+                                     verbose_name='Товары')
+
+    image = models.ForeignKey(Image,
+                              related_name='images',
+                              on_delete=models.CASCADE,
+                              verbose_name='Изображения')
+
 
 class SalesLog(models.Model):
     """ Журнал продаж """
@@ -208,7 +246,7 @@ class SalesLog(models.Model):
 class SalesLogDetail(models.Model):
     """ Детали продаж """
     price = models.DecimalField(max_digits=10,
-                                decimal_places=2,
+                                decimal_places=0,
                                 verbose_name='Цена товара')
 
     quantity = models.IntegerField(default=1)
