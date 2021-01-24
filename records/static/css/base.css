@@ -94,27 +94,6 @@ label {
     margin-bottom:4px;
 }
 
-input, textarea {
-
-    clear:both;
-    float:left;
-    /*margin:0 0 10px;*/
-    background:#efefef;
-    border:0;
-    padding:10px 20px;
-    font-size:14px;
-}
-
-input[type=submit], a.button {
-    font-weight:bold;
-    background:#cba1d6;
-    color:#fff;
-    border-radius:4px;
-    padding:10px 20px;
-    font-size:14px;
-    border:0;
-    text-transform:uppercase;
-}
 
 .errorlist {
     color:#cc0033;
@@ -267,6 +246,7 @@ ul.errorlist {
     text-align:center;
     line-height:1.2;
 }
+
 
 .product-list .item img {
     width:100%;
@@ -439,4 +419,112 @@ form div.field {
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
   display: block;
+}
+
+
+
+
+/* кнопки для цвета*/
+
+.parameters_item_color-item {
+	display: inline-block;
+	margin-right: 10px;
+}
+.parameters_item_color-item  input[type=radio] {
+	display: none;
+}
+.parameters_item_color-item  label {
+	display: inline-block;
+	cursor: pointer;
+	padding: 0px 15px;
+	line-height: 34px;
+	border: 1px solid #999;
+	border-radius: 6px;
+	user-select: none;
+}
+
+/* Checked */
+.parameters_item_color-item  input[type=radio]:checked + label {
+	background: #f3edf5;
+}
+
+/* Hover */
+.parameters_item_color-item  label:hover {
+	color: #892ca0;
+}
+
+/* Disabled */
+.parameters_item_color-item  input[type=radio]:disabled + label {
+	background: #efefef;
+	color: #666;
+}
+
+/* кнопки для размера*/
+
+.parameters_item_size  {
+	display: inline-block;
+	overflow: hidden;
+}
+.parameters_item_size-item {
+	display: inline-block;
+	float: left;
+}
+.parameters_item_size   input[type=radio] {
+	display: none;
+}
+.parameters_item_size  label {
+	display: inline-block;
+	cursor: pointer;
+	padding: 0px 15px;
+	line-height: 34px;
+	border: 1px solid #999;
+	border-right: none;
+	user-select: none;
+}
+
+.parameters_item_size .parameters_item_size-item:first-child label {
+	border-radius: 6px 0 0 6px;
+}
+.parameters_item_size .parameters_item_size-item:last-child label {
+	border-radius: 0 6px 6px 0;
+	border-right: 1px solid #999;
+}
+
+/* Checked */
+.parameters_item_size input[type=radio]:checked + label {
+	background: #f3edf5;
+}
+
+/* Hover */
+.parameters_item_size   label:hover {
+	color: #892ca0;
+}
+
+/* Disabled */
+.parameters_item_size   input[type=radio]:disabled + label {
+	background: #efefef;
+	color: #666;
+}
+
+
+input, textarea {
+
+    clear:both;
+    float:left;
+    margin:0 0 10px;
+    background:#efefef;
+    border:0;
+    padding:10px 20px;
+    font-size:14px;
+}
+
+input[type=submit], a.button {
+    font-weight:bold;
+    background:#cba1d6;
+    color:#fff;
+    border-radius:4px;
+    padding:10px 20px;
+    font-size:14px;
+    border:0;
+    text-transform:uppercase;
 }

@@ -100,12 +100,18 @@ class ProductInfo(models.Model):
         verbose_name_plural = 'Информация по товарам'
 
     def __str__(self):
-        return '{} по {}р.'\
-            .format(self.group_product.name, self.price)
+        return '{} по {}р. арт {}'\
+            .format(self.group_product.name, self.price, self.vendor_code)
 
     def get_absolute_url(self):
         """ Абсолютный путь """
         return reverse('records:product_info', args=[self.group_product.id, self.vendor_code])
+
+    def show_main_image(self):
+        """ Получить основное изображение """
+        image = Image.objects.get(main=True,
+                                  product_info__id=self.id)
+        return image.image.url if image else False
 
 
 class Product(models.Model):
@@ -142,6 +148,16 @@ class Parameter(models.Model):
     value = models.CharField(max_length=100,
                              verbose_name='Значение параметра')
 
+    display_tag = models.CharField(max_length=100,
+                                   verbose_name='Тэг',
+                                   blank=True,
+                                   null=True,
+                                   )
+    display_label = models.CharField(max_length=100,
+                                     verbose_name='Отображение параметра',
+                                     blank=True,
+                                     null=True,
+                                     )
     parameter = models.ForeignKey('self',
                                   on_delete=models.CASCADE,
                                   blank=True,
@@ -179,26 +195,24 @@ class ProductParameter(models.Model):
 
 
 class Image(models.Model):
-    """ Изображения """
+    """ Изображения товара"""
     image = models.ImageField(upload_to='products/%Y/%m/%d',
                               verbose_name="Изображение")
 
-    class Meta:
-        verbose_name = 'Изображение'
-        verbose_name_plural = 'Изображения'
+    main = models.BooleanField(default=False,
+                               verbose_name="Главное изображение")
 
-
-class ProductImage(models.Model):
-    """ Изображения товара """
     product_info = models.ForeignKey(ProductInfo,
-                                     related_name='product_info_image',
+                                     blank=True,
+                                     null=True,
+                                     related_name='images',
+                                     related_query_name='image',
                                      on_delete=models.CASCADE,
                                      verbose_name='Товары')
 
-    image = models.ForeignKey(Image,
-                              related_name='images',
-                              on_delete=models.CASCADE,
-                              verbose_name='Изображения')
+    class Meta:
+        verbose_name = 'Изображение товара'
+        verbose_name_plural = 'Изображения товара'
 
 
 class SalesLog(models.Model):

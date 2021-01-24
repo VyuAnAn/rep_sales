@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from records.models import Category, GroupProduct, ProductInfo, Product, Parameter, ProductParameter, SalesLog, SalesLogDetail
+from records.models import Category, GroupProduct, ProductInfo, Product, Parameter, ProductParameter, SalesLog, \
+    SalesLogDetail, Image
 
 
 class SalesLogDetailInline(admin.TabularInline):
@@ -27,7 +28,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Parameter)
 class ParameterAdmin(admin.ModelAdmin):
-    list_display = ['value', 'parameter']
+    list_display = ['value', 'parameter', 'display_tag', 'display_label']
     list_filter = ['value']
     search_fields = ('value',)
 
@@ -60,3 +61,6 @@ class ProductAdmin(admin.ModelAdmin):
     # ordering = ('status', 'publish')
 
 
+@admin.register(Image)
+class ImageAdmin(admin.ModelAdmin):
+    list_display = ['image', 'main', 'product_info']
