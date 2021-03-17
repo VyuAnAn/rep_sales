@@ -4,6 +4,17 @@ from django.urls import reverse
 from account.models import Profile
 
 
+# class CategoryManager(models.Manager):
+#     """  Диспетчер записей для категорий """
+#
+#     def get_queryset(self):
+#         return super().get_queryset().filter('active', 'True')
+
+    # def order_by_bb_count(self):
+    #     return super().get_queryset().annotate(
+    #         cnt=models.Count('bb')).order_by('-ent')
+
+
 class Category(models.Model):
     """ Категория товара """
     name = models.CharField(max_length=250,
@@ -11,6 +22,8 @@ class Category(models.Model):
     # slag - потом
     active = models.BooleanField(default=True,
                                  verbose_name='Активность категории')
+
+    # active_categories = CategoryManager()
 
     # внешние ключики
     category = models.ForeignKey('self',
@@ -158,6 +171,8 @@ class Parameter(models.Model):
                                      blank=True,
                                      null=True,
                                      )
+    sort_number = models.IntegerField(verbose_name="Номер по-порядку")
+
     parameter = models.ForeignKey('self',
                                   on_delete=models.CASCADE,
                                   blank=True,

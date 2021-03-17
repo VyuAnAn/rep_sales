@@ -13,6 +13,7 @@
             <tr>
                 <th>Изображение</th>
                 <th>Наименование</th>
+                <th>Параметры</th>
                 <th>Количество</th>
                 <th>Удалить</th>
                 <th>Цена за один товар</th>
@@ -25,13 +26,22 @@
                 {% with product=item.product %}
                     <tr>
                         <td>
-                            <a href="{{ product.get_absolute_url }}">
-                            <img src="{% static 'img/no_image.png' %}">
+                            <a href="{{ product.product_info.get_absolute_url }}">
+                                <img src="{% if product.product_info.show_main_image %}
+                                                {{ product.product_info.show_main_image }}
+                                          {% else %}
+                                                {% static 'img/no_image.png' %}
+                                          {% endif %}">
                             </a>
+
                         </td>
-                        <td>{{ product.name }}</td>
+                        <td>{{ product.product_info.group_product.name }}</td>
+                        <td>{% for parameter in product.product_parameter %}
+                                {{parameter.parameter.value}}
+                            {% endfor %}
+                        </td>
                         <td>
-                            <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                            <form action="{% url 'cart:cart_add' %}" method="post">
                                 {{ item.update_quantity_form.quantity }}
                                 {{ item.update_quantity_form.update }}
                                 <input type="submit" value="Обновить">

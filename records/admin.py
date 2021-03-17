@@ -28,7 +28,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Parameter)
 class ParameterAdmin(admin.ModelAdmin):
-    list_display = ['value', 'parameter', 'display_tag', 'display_label']
+    list_display = ['value', 'parameter', 'display_tag', 'display_label', 'sort_number']
     list_filter = ['value']
     search_fields = ('value',)
 

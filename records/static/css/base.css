@@ -449,7 +449,7 @@ form div.field {
 }
 
 /* Hover */
-.parameters_item_color-item  label:hover {
+.parameters_item_color-item  /* label:hover */ {
 	color: #892ca0;
 }
 
@@ -496,7 +496,7 @@ form div.field {
 }
 
 /* Hover */
-.parameters_item_size   label:hover {
+.parameters_item_size   /*label:hover*/ {
 	color: #892ca0;
 }
 

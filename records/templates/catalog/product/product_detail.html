@@ -6,50 +6,59 @@
 
 {% block content %}
 
+    <a href="{% url 'records:shop' %}">Вернуться к выбору товаров</a>
     <div class="product-detail">
 
         <h1>{{ group_product.name }}</h1>
 
-        {% for info in info_products %}
-            <div class="item">
-                <a href="#">
-                    <img src="{% if info.show_main_image %}
-                                    {{ info.show_main_image }}
+        <div class="item" >
+            <form id="add_cart_form" action="{% url 'cart:cart_add' %}" method="post">
+                <a href="{{ info_product.get_absolute_url }}">
+                    <img src="{% if info_product.show_main_image %}
+                                    {{ info_product.show_main_image }}
                               {% else %}
                                     {% static 'img/no_image.png' %}
                               {% endif %}">
                 </a>
-                <a href="#"> {{ info.vendor_code }}</a>
-                {{ info.price }} руб.
+                <a href="{{ info_product.get_absolute_url }}"> {{ info_product.vendor_code }}</a>
+                {{ info_product.price }} руб.
 
-                <div>
-                {% for parameter in all_parameters %}
+                <div class="parameters">
+                    {% for parameter in all_parameters %}
 
-                    {% ifchanged parameter.parameter_id %}
+                        {% ifchanged parameter.parameter_id %}
+                            </div>
+                             <p>{{ parameter.parameter.display_label }}:</p>
+                            <div class="parameters_item_{{ parameter.parameter.display_tag }}">
+                        {% endifchanged %}
+
+                        <div class="parameters_item_{{ parameter.parameter.display_tag }}-item">
+
+                            <input type="radio" class="product_parameters" name="{{ parameter.parameter.display_tag }}"
+                                   id="{{ parameter.id }}"
+                                   value="{{ parameter.id }}"
+                                   {% if parameter.in_stock %}  {% else %} disabled {% endif %}>
+                            <label for="{{ parameter.id }}">{{ parameter.value }}</label>
+
                         </div>
-                         <p>{{ parameter.parameter.value }}:</p>
-                        <div class="parameters_item_{{ parameter.parameter.display_tag }}">
-                    {% endifchanged %}
-
-                    <div class="parameters_item_{{ parameter.parameter.display_tag }}-item">
-                        <input type="radio" name="{{ parameter.parameter.display_tag }}"
-                               id="{{ parameter.id  }}"
-                               value="{{ parameter.id  }}"
-                               {% if parameter.in_stock %}  {% else %} disabled {% endif %}
-                        >
-                        <label for="{{ parameter.id }}">
-                            {{ parameter.value }}</label>
-                    </div>
-                {% endfor%}
+                    {% endfor%}
                 </div>
-                <form action="{% url 'cart:cart_add' info.id %}" method="post">
-                    {{ cart_product_form }}
-                    {% csrf_token %}
-                    <input type="submit" value="В корзину">
-                </form>
 
-            </div>
-        {% endfor %}
+                <div class="photo">
+                    {% for image in images %}
+                        <img style="width:20px;height:20px" src="{{ image.image.url }}">
+                    {% empty %}
+                        <p></p>
+                    {% endfor%}
+                </div>
+
+                {{ cart_product_form }}
+                {% csrf_token %}
+                <input name="info_id" type="hidden" value="{{ info_product.id }}" >
+                <input id="add_cart" type="submit" value="В корзину" >
+            </form>
+
+        </div>
 
     </div>
 
