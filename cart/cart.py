@@ -1,8 +1,9 @@
 from decimal import Decimal
 
 from django.conf import settings
+from django.db.models import Prefetch
 
-from records.models import Product
+from records.models import Product, ProductParameter
 
 
 class Cart(object):
@@ -47,7 +48,10 @@ class Cart(object):
         """ Проходим по товарам корзины и получаем соответствующие объекты Product """
         product_ids = self.cart.keys()
         # Получаем объекты модели Product и передаем их в корзину.
-        products = Product.objects.filter(id__in=product_ids)
+        products = Product.objects.filter(id__in=product_ids) \
+             .prefetch_related(Prefetch('product_parameter_products', to_attr='product_parameter'
+                                        # queryset=ProductParameter.objects.select_related('product')
+                                        ))
 
         cart = self.cart.copy()
 

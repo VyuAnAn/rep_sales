@@ -35,9 +35,10 @@
                             </a>
 
                         </td>
-                        <td>{{ product.product_info.group_product.name }}</td>
+                        <td>{{ product.product_info.group_product.name }} ({{ product.product_info.vendor_code }}) </td>
+
                         <td>{% for parameter in product.product_parameter %}
-                                {{parameter.parameter.value}}
+                                {{ parameter.parameter.parameter.display_label }}: {{ parameter.parameter.value }} <br/>
                             {% endfor %}
                         </td>
                         <td>
@@ -57,7 +58,7 @@
 
             <tr class="total">
                 <td>Итого</td>
-                <td colspan="4"></td>
+                <td colspan="5"></td>
                 <td class="num">{{ cart.get_total_price }} руб.</td>
             </tr>
         </tbody>
