@@ -28,7 +28,21 @@
                 </ul>
             {% endif %}
 
+
             <div class="user">
+                <div class="'cart">
+                    {% with total_items=cart|length %}
+                        {% if cart|length > 0 %}
+                            В корзине:
+                            <a href='{% url "cart:cart_detail" %}'>
+                                {{ total_items}} шт. | {{ cart.get_total_price }} руб.
+                            </a>
+                        {% else %}
+                            Корзинка пуста
+                        {% endif %}
+                    {% endwith %}
+                </div>
+
                 {% if request.user.is_authenticated %}
 
                     <div class="dropdown">

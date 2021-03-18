@@ -106,32 +106,3 @@ def product_detail(request, group_id, vendor_code):
                    'all_parameters': all_parameters,
                    'cart_product_form': cart_product_form,
                    'section': section})
-
-
-# @login_required
-# def get_product(request):
-#     """ Получить id товара по параметрам """
-#     if request.method == "POST" and request.is_ajax():
-#         # получить id_info
-#         info_id = request.POST.get('info_id')
-#         # получить параметры, если они есть
-#         params_id = request.POST.getlist('params_id[]')
-#         # преобразовать полученные параметры в число
-#         params_id = set(map(int, params_id))
-#         product_id = None
-#         # получить все товары по info_id
-#         products = Product.objects.filter(product_info__id=info_id)
-#
-#         # получить множество параметров по каждому параметру
-#         for product in products:
-#             product_parameters = set(ProductParameter.objects.filter(product=product)
-#                                      .values_list('parameter__id', flat=True).order_by('parameter__id'))
-#             # print("product_parameters", product_parameters)
-#             # если есть совпадение по товару, получить id
-#             if product_parameters == params_id:
-#                 product_id = product.id
-#
-#         # print("info_id: ", info_id, " params_id: ", params_id, "product_id", product_id)
-#         return HttpResponseRedirect(reverse('cart:cart_add', args=(product_id,)))
-#         # return HttpResponse(product_id)
-#     return HttpResponse("fail")

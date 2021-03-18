@@ -49,9 +49,7 @@ class Cart(object):
         product_ids = self.cart.keys()
         # Получаем объекты модели Product и передаем их в корзину.
         products = Product.objects.filter(id__in=product_ids) \
-             .prefetch_related(Prefetch('product_parameter_products', to_attr='product_parameter'
-                                        # queryset=ProductParameter.objects.select_related('product')
-                                        ))
+            .prefetch_related(Prefetch('product_parameter_products', to_attr='product_parameter'))
 
         cart = self.cart.copy()
 
@@ -77,4 +75,3 @@ class Cart(object):
         """ Очистка корзины """
         del self.session[settings.CART_SESSION_ID]
         self.save()
-

@@ -63,15 +63,7 @@ $(document).ready(function() {
 
         // если все параметры указаны, найти товар и добавить в корзину
         if (check_params) {
-//            let csrfmiddlewaretoken = $('input[name="csrfmiddlewaretoken"]').attr('value');
-//            let info_id = $('input[name="info_id"]').attr('value');
-
             $.post(frm.attr('action'),form_data
-//                    {
-//                        info_id: info_id,
-//                        params_id: params_id,
-//                        csrfmiddlewaretoken: csrfmiddlewaretoken
-//                    }
                     )
               .done(function( data ) {
                 alert( "Товар в корзинке: " + data);

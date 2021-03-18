@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 from cart.cart import Cart
-from cart.forms import CartAddProductForm
+from cart.forms import CartAddProductForm, CartUpdateProductForm
 from records.models import Product, ProductParameter
 
 
@@ -71,12 +71,27 @@ def cart_remove(request, product_id):
 
 
 def cart_detail(request):
-    """ Содержимое корзины"""
+    """ Содержимое корзины """
     cart = Cart(request)
     for item in cart:
-        item['update_quantity_form'] = CartAddProductForm(
+        item['update_quantity_form'] = CartUpdateProductForm(
             initial={'quantity': item['quantity'],
                      'update': True})
     return render(request,
                   'cart/detail.html',
                   {'cart': cart})
+
+
+@require_POST
+def cart_update(request, product_id):
+    """ Обновление количества товаров в корзине """
+    cart = Cart(request)
+    product = get_object_or_404(Product, id=product_id, active=True, quantity__gt=0)
+    form = CartUpdateProductForm(request.POST)
+    if form.is_valid():
+        cd = form.cleaned_data
+        print(product.quantity)
+        cart.add(product=product,
+                 quantity=cd['quantity'],
+                 update_quantity=cd['update'])
+    return redirect('cart:cart_detail')
